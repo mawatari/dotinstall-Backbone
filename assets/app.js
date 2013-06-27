@@ -1,10 +1,13 @@
 (function() {
     // Model
     var Task = Backbone.Model.extend({
-        // defaults の指定もできる
         defaults: {
             title: 'do something!',
             completed: false
+        },
+        // メソッドのようなものも作れる
+        toggle: function() {
+            this.set('completed', !this.get('completed'));
         }
     });
     
@@ -12,6 +15,14 @@
         completed: true
     });
 
-    // toJSON() とすれば、attributesプロパティのみを返してくれる
+    // set, get
+//    task.set('title', 'newTitle');
+//    var title = task.get('title');
+//    console.log(title);
+
+    console.log(task.toJSON());
+    task.toggle();
+    console.log(task.toJSON());
+    task.toggle();
     console.log(task.toJSON());
 })();
