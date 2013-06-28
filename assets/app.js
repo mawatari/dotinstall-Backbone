@@ -9,22 +9,25 @@
 
     var TaskView = Backbone.View.extend({
         tagName: 'li',
-        // インスタンス生成時にコールされる
         initialize: function() {
-            // on: イベントが発火した際に指定したコールバック関数を実行する
             this.model.on('destroy', this.remove, this);
+            // Modelに変更があった場合は、再描画する
+            this.model.on('change', this.render, this);
         },
         events: {
-            // .deleteクラスをクリックした際にdestroyメソッドを実行する
-            'click .delete': 'destroy'
+            'click .delete': 'destroy',
+            // チェックボックスにクリックイベントを設定
+            'click .toggle': 'toggle'
+        },
+        // 現在のcompletedプロパティを得て、反転させてセットする
+        toggle: function() {
+            this.model.set('completed', !this.model.get('completed'));
         },
         destroy: function() {
             if (confirm('削除してもよいですか？')) {
-                // okの場合、modelのdestroyメソッドを実行する
                 this.model.destroy();
             }
         },
-        // onメソッドにより、modelのdestroy実行時にコールバックとして実行される
         remove: function() {
             this.$el.remove();
         },
