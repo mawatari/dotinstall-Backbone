@@ -11,15 +11,12 @@
         tagName: 'li',
         initialize: function() {
             this.model.on('destroy', this.remove, this);
-            // Modelに変更があった場合は、再描画する
             this.model.on('change', this.render, this);
         },
         events: {
             'click .delete': 'destroy',
-            // チェックボックスにクリックイベントを設定
             'click .toggle': 'toggle'
         },
-        // 現在のcompletedプロパティを得て、反転させてセットする
         toggle: function() {
             this.model.set('completed', !this.model.get('completed'));
         },
