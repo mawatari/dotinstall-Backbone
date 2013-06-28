@@ -12,18 +12,12 @@
     // View
     var TaskView = Backbone.View.extend({
         tagName: 'li',
-        // class, id を付与する場合は以下の通り
         className: 'liClass',
         id: 'liId',
 
-        // templateを定義する
-        // クオートはダブルとシングルで意味が変わるので注意
-        template: _.template("<%- title %>"),
+        // jQueryで外部のtemplateを読み込む
+        template: _.template($('#task-template').html()),
         
-        // renderを定義
-        // modelをJSONで得て、テンプレートにはめる
-        // ViewのエレメントにHTMLとして挿入
-        // return thisをしておくのが作法。メソッドチェーン等を使うときに恩恵を受けれる
         render: function() {
             var template = this.template(this.model.toJSON());
             this.$el.html(template);
@@ -32,6 +26,8 @@
     });
 
     var taskView = new TaskView({model: task});
-    // renderメソッドを実行し、その中のエレメントを得る
     console.log(taskView.render().el);
+
+    // レンダリングしたものをbodyにappendする
+    $('body').append(taskView.render().el);
 })();
