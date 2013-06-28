@@ -6,8 +6,7 @@
 </head>
 <body>
 
-<!--外部にテンプレートを定義。type="text/template"とすることで、ブラウザではJavaScriptとして実行されない-->
-<script type="text/template" id="task-template"><%- title %></script>
+<script type="text/template" id="task-template"><%- title %> <span class="command">command</span></script>
 <script type="text/javascript" src="assets/lib/underscore-min.js"></script>
 <script type="text/javascript" src="assets/lib/jquery-2.0.2.min.js"></script>
 <script type="text/javascript" src="assets/lib/backbone-min.js"></script>

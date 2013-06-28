@@ -15,7 +15,16 @@
         className: 'liClass',
         id: 'liId',
 
-        // jQueryで外部のtemplateを読み込む
+        events: {
+            // イベントの後にメソッドを指定する
+//            'click': 'sayHello'
+            // セレクタを指定することも可能
+            'click .command': 'sayHello'
+        },
+        sayHello: function() {
+            alert('hello!');
+        },
+
         template: _.template($('#task-template').html()),
         
         render: function() {
@@ -28,6 +37,5 @@
     var taskView = new TaskView({model: task});
     console.log(taskView.render().el);
 
-    // レンダリングしたものをbodyにappendする
     $('body').append(taskView.render().el);
 })();
