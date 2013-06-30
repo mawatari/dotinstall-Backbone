@@ -46,6 +46,25 @@
         }
     });
 
+    // タスク追加用のViewを定義
+    var AddTaskView = Backbone.View.extend({
+        // 新規要素の追加は不要であるため、tagNameは定義しない
+        // そのかわり、使用する要素を指定する
+        el: '#addTask',
+        // イベントの定義
+        events: {
+            'submit': 'submit'
+        },
+        // submitイベントの定義
+        submit: function(e) {
+            // サブミットのキャンセル
+            e.preventDefault();
+            // #titleのvalueを得て、コレクションに追加する
+            var task = new Task({title: $('#title').val()});
+            this.collection.add(task);
+        }
+    });
+
     var tasks = new Tasks([
         {
             title: 'task1',
