@@ -3,6 +3,20 @@
         defaults: {
             title: 'do something',
             completed: false
+        },
+        // validateを定義
+        validate: function(attrs) {
+            // UnderscoreのisEmptyメソッドで確認
+            if (_.isEmpty(attrs.title)) {
+                return "タスクが空白です。";
+            }
+        },
+        // Modelの状態監視
+        initialize: function() {
+            // invalidでエラーを検知
+            this.on('invalid', function(model, error) {
+                $('#error').html(error);
+            });
         }
     });
     var Tasks = Backbone.Collection.extend({model: Task});
@@ -38,11 +52,9 @@
     var TasksView = Backbone.View.extend({
         tagName: 'ul',
         initialize: function() {
-            // Task Modelにaddされたときの処理
             this.collection.on('add', this.addNew, this);
         },
         addNew: function(task) {
-            // TaskViewを追加し描画する
             var taskView = new TaskView({model: task});
             this.$el.append(taskView.render().el);
         },
@@ -62,8 +74,12 @@
         },
         submit: function(e) {
             e.preventDefault();
-            var task = new Task({title: $('#title').val()});
-            this.collection.add(task);
+//            var task = new Task({title: $('#title').val()});
+            // validateを実施するように変更
+            var task = new Task();
+            if (task.set({title: $('#title').val()}, {validate: true})) {
+                this.collection.add(task);
+            }
         }
     });
 
