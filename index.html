@@ -17,11 +17,12 @@
 <form id="addTask" action="">
 	<input type="text" id="title"/>
 	<input type="submit" value="追加"/>
-	<!--エラーメッセージ表示領域の追加-->
 	<span id="error"></span>
 </form>
 
 <div id="tasks"></div>
+<!--残タスク数表示領域を追加-->
+<p>残タスク数: <span id="count"></span></p>
 
 <script type="text/template" id="task-template">
 	<input type="checkbox" class="toggle" <%= completed ? 'checked' : '' %>/>
