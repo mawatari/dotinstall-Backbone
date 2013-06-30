@@ -37,6 +37,15 @@
     });
     var TasksView = Backbone.View.extend({
         tagName: 'ul',
+        initialize: function() {
+            // Task Modelにaddされたときの処理
+            this.collection.on('add', this.addNew, this);
+        },
+        addNew: function(task) {
+            // TaskViewを追加し描画する
+            var taskView = new TaskView({model: task});
+            this.$el.append(taskView.render().el);
+        },
         render: function() {
             this.collection.each(function(task) {
                 var taskView = new TaskView({model: task});
@@ -46,20 +55,13 @@
         }
     });
 
-    // タスク追加用のViewを定義
     var AddTaskView = Backbone.View.extend({
-        // 新規要素の追加は不要であるため、tagNameは定義しない
-        // そのかわり、使用する要素を指定する
         el: '#addTask',
-        // イベントの定義
         events: {
             'submit': 'submit'
         },
-        // submitイベントの定義
         submit: function(e) {
-            // サブミットのキャンセル
             e.preventDefault();
-            // #titleのvalueを得て、コレクションに追加する
             var task = new Task({title: $('#title').val()});
             this.collection.add(task);
         }
@@ -79,5 +81,6 @@
     ]);
 
     var tasksView = new TasksView({collection: tasks});
+    var addTaskView = new AddTaskView({collection: tasks});
     $('#tasks').html(tasksView.render().el);
 })();
