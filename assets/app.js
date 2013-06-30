@@ -49,14 +49,19 @@
         tagName: 'ul',
         initialize: function() {
             this.collection.on('add', this.addNew, this);
+            // 変更、削除イベント時に残タスクを再計算
+            this.collection.on('change', this.updateCount, this);
+            this.collection.on('destroy', this.updateCount, this);
         },
         addNew: function(task) {
             var taskView = new TaskView({model: task});
             this.$el.append(taskView.render().el);
+            // 新規追加後、入力フォームを空にし、フォーカスする
+            $('#title').val('').focus();
+            // 新規追加後、残タスクを再計算
+            this.updateCount();
         },
-        // 残タスクをカウントするメソッドを定義
         updateCount: function() {
-            // 完了フィラッグがfalseのものだけでフィルタリングする
             var uncompletedTasks = this.collection.filter(function(task) {
                 return !task.get('completed');
             });
@@ -82,6 +87,8 @@
             var task = new Task();
             if (task.set({title: $('#title').val()}, {validate: true})) {
                 this.collection.add(task);
+                // 新規追加が成功した場合は、エラーをクリアする
+                $('#error').empty();
             }
         }
     });
